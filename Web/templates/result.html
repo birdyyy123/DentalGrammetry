@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Import the component -->
+<!-- Use it like any other HTML element -->
+   <!-- <link rel="stylesheet" href="mine.css"> -->
+</head>
+<body>
+  <style>
+    .nav {
+      background-color: rgba(18, 46, 82, 0.411); 
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .nav li {
+      display: inline-block;
+      font-size: 20px;
+      padding: 10px;
+    }
+    </style>
+        </head>
+        <body>
+          <ul class="nav">
+            <li><a href="/">DentalGrammetry</a></li>
+            <li><a href="web_help">Manual</a></li>
+            <li><a href="result">3D Model</a></li>  
+            <li><a href="result2">result</a></li>
+          </ul>   
+
+        
+
+<!-- Import the component -->
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.js"></script> 
+<model-viewer id="reveal" loading="eager" camera-controls auto-rotate  src="../static/model.glb" alt="A 3D model of a shishkebab" style="width: 1920px; height: 920px;">
+
+
+
+
+  <div id="annotation">
+    <h3>
+        <ol>
+            <ol>
+      
+            </ol>
+        </ol>
+    </h3>
+        
+</div>
+</model-viewer>
+       
+    
+
+</body>
+</html>

@@ -1,0 +1,501 @@
+{
+    "header": {
+        "pipelineVersion": "2.2", 
+        "releaseVersion": "2019.2.0", 
+        "fileVersion": "1.1", 
+        "nodesVersions": {
+            "FeatureMatching": "2.0", 
+            "MeshFiltering": "2.0", 
+            "Texturing": "5.0", 
+            "Publish": "1.1", 
+            "PrepareDenseScene": "3.0", 
+            "DepthMap": "2.0", 
+            "StructureFromMotion": "2.0", 
+            "CameraInit": "2.0", 
+            "ImageMatching": "1.0", 
+            "FeatureExtraction": "1.1", 
+            "Meshing": "3.0", 
+            "DepthMapFilter": "3.0"
+        }
+    }, 
+    "graph": {
+        "Texturing_1": {
+            "inputs": {
+                "padding": 5, 
+                "visibilityRemappingMethod": "PullPush", 
+                "textureSide": 8192, 
+                "angleHardThreshold": 90.0, 
+                "imagesFolder": "{DepthMap_1.imagesFolder}", 
+                "downscale": 1, 
+                "useUDIM": true, 
+                "forceVisibleByAllVertices": false, 
+                "verboseLevel": "info", 
+                "processColorspace": "sRGB", 
+                "fillHoles": false, 
+                "multiBandDownscale": 4, 
+                "bestScoreThreshold": 0.1, 
+                "correctEV": false, 
+                "input": "{Meshing_1.output}", 
+                "unwrapMethod": "Basic", 
+                "multiBandNbContrib": {
+                    "high": 1, 
+                    "midHigh": 5, 
+                    "low": 0, 
+                    "midLow": 10
+                }, 
+                "flipNormals": false, 
+                "useScore": true, 
+                "outputTextureFileType": "png", 
+                "inputMesh": "{MeshFiltering_1.outputMesh}"
+            }, 
+            "nodeType": "Texturing", 
+            "uids": {
+                "0": "2286b548e669930f2aad3a652ac730f21f5e6a56"
+            }, 
+            "parallelization": {
+                "blockSize": 0, 
+                "split": 1, 
+                "size": 1
+            }, 
+            "outputs": {
+                "outputTextures": "{cache}/{nodeType}/{uid0}/texture_*.{outputTextureFileTypeValue}", 
+                "outputMesh": "{cache}/{nodeType}/{uid0}/texturedMesh.obj", 
+                "outputMaterial": "{cache}/{nodeType}/{uid0}/texturedMesh.mtl", 
+                "output": "{cache}/{nodeType}/{uid0}/"
+            }, 
+            "position": [
+                0, 
+                0
+            ], 
+            "internalFolder": "{cache}/{nodeType}/{uid0}/"
+        }, 
+        "Meshing_1": {
+            "inputs": {
+                "simGaussianSizeInit": 10.0, 
+                "maxInputPoints": 50000000, 
+                "repartition": "multiResolution", 
+                "simGaussianSize": 10.0, 
+                "depthMapsFolder": "{DepthMapFilter_1.depthMapsFolder}", 
+                "simFactor": 15.0, 
+                "colorizeOutput": false, 
+                "input": "{DepthMapFilter_1.input}", 
+                "addLandmarksToTheDensePointCloud": false, 
+                "voteMarginFactor": 4.0, 
+                "contributeMarginFactor": 2.0, 
+                "estimateSpaceMinObservationAngle": 10, 
+                "saveRawDensePointCloud": false, 
+                "minStep": 2, 
+                "pixSizeMarginFinalCoef": 4.0, 
+                "depthMapsFilterFolder": "{DepthMapFilter_1.output}", 
+                "maxPoints": 5000000, 
+                "maxPointsPerVoxel": 1000000, 
+                "angleFactor": 15.0, 
+                "partitioning": "singleBlock", 
+                "estimateSpaceFromSfM": true, 
+                "minAngleThreshold": 1.0, 
+                "pixSizeMarginInitCoef": 2.0, 
+                "refineFuse": true, 
+                "verboseLevel": "info", 
+                "estimateSpaceMinObservations": 3
+            }, 
+            "nodeType": "Meshing", 
+            "uids": {
+                "0": "12a166f6eab37a99591a14c30e5a017dd33d1c37"
+            }, 
+            "parallelization": {
+                "blockSize": 0, 
+                "split": 1, 
+                "size": 1
+            }, 
+            "outputs": {
+                "output": "{cache}/{nodeType}/{uid0}/densePointCloud.abc", 
+                "outputMesh": "{cache}/{nodeType}/{uid0}/mesh.obj"
+            }, 
+            "position": [
+                0, 
+                0
+            ], 
+            "internalFolder": "{cache}/{nodeType}/{uid0}/"
+        }, 
+        "DepthMapFilter_1": {
+            "inputs": {
+                "minNumOfConsistentCamsWithLowSimilarity": 4, 
+                "computeNormalMaps": false, 
+                "minNumOfConsistentCams": 3, 
+                "depthMapsFolder": "{DepthMap_1.output}", 
+                "verboseLevel": "info", 
+                "nNearestCams": 10, 
+                "pixSizeBallWithLowSimilarity": 0, 
+                "input": "{DepthMap_1.input}", 
+                "pixSizeBall": 0, 
+                "minViewAngle": 2.0, 
+                "maxViewAngle": 70.0
+            }, 
+            "nodeType": "DepthMapFilter", 
+            "uids": {
+                "0": "88ed33670a5433f77909599bb899950fa0896fee"
+            }, 
+            "parallelization": {
+                "blockSize": 10, 
+                "split": 1, 
+                "size": 3
+            }, 
+            "outputs": {
+                "output": "{cache}/{nodeType}/{uid0}/"
+            }, 
+            "position": [
+                0, 
+                0
+            ], 
+            "internalFolder": "{cache}/{nodeType}/{uid0}/"
+        }, 
+        "ImageMatching_1": {
+            "inputs": {
+                "minNbImages": 200, 
+                "tree": "", 
+                "maxDescriptors": 500, 
+                "verboseLevel": "info", 
+                "weights": "", 
+                "nbMatches": 50, 
+                "input": "{FeatureExtraction_1.input}", 
+                "featuresFolders": [
+                    "{FeatureExtraction_1.output}"
+                ]
+            }, 
+            "nodeType": "ImageMatching", 
+            "uids": {
+                "0": "b4238c2386c5b177721135848b6949848bea581f"
+            }, 
+            "parallelization": {
+                "blockSize": 0, 
+                "split": 1, 
+                "size": 3
+            }, 
+            "outputs": {
+                "output": "{cache}/{nodeType}/{uid0}/imageMatches.txt"
+            }, 
+            "position": [
+                0, 
+                0
+            ], 
+            "internalFolder": "{cache}/{nodeType}/{uid0}/"
+        }, 
+        "FeatureExtraction_1": {
+            "inputs": {
+                "verboseLevel": "info", 
+                "describerPreset": "normal", 
+                "describerTypes": [
+                    "sift"
+                ], 
+                "forceCpuExtraction": true, 
+                "input": "{CameraInit_1.output}"
+            }, 
+            "nodeType": "FeatureExtraction", 
+            "uids": {
+                "0": "70c8f72cb2e48913e4e51946c9d7bb16edf8285f"
+            }, 
+            "parallelization": {
+                "blockSize": 40, 
+                "split": 1, 
+                "size": 3
+            }, 
+            "outputs": {
+                "output": "{cache}/{nodeType}/{uid0}/"
+            }, 
+            "position": [
+                0, 
+                0
+            ], 
+            "internalFolder": "{cache}/{nodeType}/{uid0}/"
+        }, 
+        "StructureFromMotion_1": {
+            "inputs": {
+                "localizerEstimatorMaxIterations": 4096, 
+                "minAngleForLandmark": 2.0, 
+                "minNumberOfObservationsForTriangulation": 2, 
+                "maxAngleInitialPair": 40.0, 
+                "maxNumberOfMatches": 0, 
+                "localizerEstimator": "acransac", 
+                "describerTypes": [
+                    "sift"
+                ], 
+                "lockScenePreviouslyReconstructed": false, 
+                "localBAGraphDistance": 1, 
+                "lockAllIntrinsics": false, 
+                "input": "{FeatureMatching_1.input}", 
+                "featuresFolders": "{FeatureMatching_1.featuresFolders}", 
+                "useRigConstraint": true, 
+                "initialPairA": "", 
+                "initialPairB": "", 
+                "interFileExtension": ".abc", 
+                "useLocalBA": true, 
+                "matchesFolders": [
+                    "{FeatureMatching_1.output}"
+                ], 
+                "minInputTrackLength": 2, 
+                "useOnlyMatchesFromInputFolder": false, 
+                "verboseLevel": "info", 
+                "minAngleForTriangulation": 3.0, 
+                "maxReprojectionError": 4.0, 
+                "minAngleInitialPair": 5.0, 
+                "localizerEstimatorError": 0.0
+            }, 
+            "nodeType": "StructureFromMotion", 
+            "uids": {
+                "0": "2649de9e0b3e6a844ea259ac7fd29bbd2815b21a"
+            }, 
+            "parallelization": {
+                "blockSize": 0, 
+                "split": 1, 
+                "size": 3
+            }, 
+            "outputs": {
+                "output": "{cache}/{nodeType}/{uid0}/sfm.abc", 
+                "extraInfoFolder": "{cache}/{nodeType}/{uid0}/", 
+                "outputViewsAndPoses": "{cache}/{nodeType}/{uid0}/cameras.sfm"
+            }, 
+            "position": [
+                0, 
+                0
+            ], 
+            "internalFolder": "{cache}/{nodeType}/{uid0}/"
+        }, 
+        "PrepareDenseScene_1": {
+            "inputs": {
+                "imagesFolders": [], 
+                "outputFileType": "exr", 
+                "verboseLevel": "info", 
+                "saveMatricesTxtFiles": false, 
+                "saveMetadata": true, 
+                "input": "{StructureFromMotion_1.output}", 
+                "evCorrection": false
+            }, 
+            "nodeType": "PrepareDenseScene", 
+            "uids": {
+                "0": "0344c59719466b5d53df2d03f19dd77516bcf7f7"
+            }, 
+            "parallelization": {
+                "blockSize": 40, 
+                "split": 1, 
+                "size": 3
+            }, 
+            "outputs": {
+                "output": "{cache}/{nodeType}/{uid0}/", 
+                "outputUndistorted": "{cache}/{nodeType}/{uid0}/*.{outputFileTypeValue}"
+            }, 
+            "position": [
+                0, 
+                0
+            ], 
+            "internalFolder": "{cache}/{nodeType}/{uid0}/"
+        }, 
+        "CameraInit_1": {
+            "inputs": {
+                "groupCameraFallback": "folder", 
+                "intrinsics": [
+                    {
+                        "principalPoint": {
+                            "y": 1512.0, 
+                            "x": 2016.0
+                        }, 
+                        "locked": false, 
+                        "pxFocalLength": 3289.914110429448, 
+                        "serialNumber": "mini3_Apple_iPhone 7", 
+                        "intrinsicId": 3054778243, 
+                        "height": 3024, 
+                        "width": 4032, 
+                        "initializationMode": "estimated", 
+                        "pxInitialFocalLength": 3289.914110429448, 
+                        "type": "radial3", 
+                        "distortionParams": [
+                            0.0, 
+                            0.0, 
+                            0.0
+                        ]
+                    }
+                ], 
+                "defaultFieldOfView": 45.0, 
+                "verboseLevel": "info", 
+                "viewpoints": [
+                    {
+                        "viewId": 124502788, 
+                        "intrinsicId": 3054778243, 
+                        "poseId": 124502788, 
+                        "rigId": -1, 
+                        "subPoseId": -1, 
+                        "path": "mini3/111.JPG", 
+                        "metadata": "{\"YResolution\": \"72\", \"Exif:ColorSpace\": \"65535\", \"Exif:ExposureMode\": \"0\", \"Exif:PhotographicSensitivity\": \"40\", \"Exif:LensModel\": \"iPhone 7 back camera 3.99mm f/1.8\", \"Make\": \"Apple\", \"Exif:PixelXDimension\": \"4032\", \"Exif:ApertureValue\": \"1.69599\", \"DateTime\": \"2017:07:18 15:31:28\", \"XResolution\": \"72\", \"Exif:DateTimeDigitized\": \"2017:07:18 15:31:28\", \"oiio:ColorSpace\": \"sRGB\", \"GPS:HPositioningError\": \"8\", \"GPS:DestBearingRef\": \"T\", \"GPS:Speed\": \"0.0605214\", \"Exif:DateTimeOriginal\": \"2017:07:18 15:31:28\", \"GPS:TimeStamp\": \"22, 31, 28\", \"GPS:Latitude\": \"37, 43, 23.86\", \"Exif:PixelYDimension\": \"3024\", \"GPS:ImgDirection\": \"7.97446\", \"Exif:MeteringMode\": \"5\", \"Exif:LensSpecification\": \"3.99, 3.99, 1.8, 1.8\", \"Exif:WhiteBalance\": \"0\", \"GPS:LatitudeRef\": \"N\", \"Exif:SceneCaptureType\": \"0\", \"Exif:ExposureProgram\": \"2\", \"FNumber\": \"1.8\", \"GPS:Altitude\": \"1224.42\", \"Exif:ExposureBiasValue\": \"0\", \"GPS:SpeedRef\": \"K\", \"Exif:FocalLength\": \"3.99\", \"GPS:Longitude\": \"119, 36, 57.18\", \"ICCProfile\": \"0, 0, 2, 36, 97, 112, 112, 108, 4, 0, 0, 0, 109, 110, 116, 114, 82, 71, 66, 32, 88, 89, 90, 32, 7, 223, 0, 10, 0, 14, 0, 13, 0, 8, 0, 57, 97, 99, 115, 112, 65, 80, 80, 76, 0, 0, 0, 0, 65, 80, 80, 76, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ... [548 x uint8]\", \"Exif:BrightnessValue\": \"5.17327\", \"GPS:DateStamp\": \"2017:07:18\", \"Exif:YCbCrPositioning\": \"1\", \"GPS:AltitudeRef\": \"0\", \"GPS:LongitudeRef\": \"W\", \"Model\": \"iPhone 7\", \"Exif:LensMake\": \"Apple\", \"GPS:ImgDirectionRef\": \"T\", \"Software\": \"10.3.2\", \"ExposureTime\": \"0.00833333\", \"Exif:ShutterSpeedValue\": \"6.90799\", \"Exif:ExifVersion\": \"0221\", \"Exif:FocalLengthIn35mmFilm\": \"28\", \"Orientation\": \"6\", \"Exif:SubsecTimeDigitized\": \"462\", \"Exif:SubsecTimeOriginal\": \"462\", \"GPS:DestBearing\": \"7.97446\", \"ResolutionUnit\": \"none\", \"Exif:FlashPixVersion\": \"0100\", \"jpeg:subsampling\": \"4:2:0\", \"Exif:Flash\": \"24\", \"Exif:SensingMethod\": \"2\", \"AliceVision:SensorWidth\": \"4.890000\"}"
+                    }, 
+                    {
+                        "viewId": 705580439, 
+                        "intrinsicId": 3054778243, 
+                        "poseId": 705580439, 
+                        "rigId": -1, 
+                        "subPoseId": -1, 
+                        "path": "mini3/222.JPG", 
+                        "metadata": "{\"YResolution\": \"72\", \"Exif:ColorSpace\": \"65535\", \"Exif:ExposureMode\": \"0\", \"Exif:PhotographicSensitivity\": \"20\", \"Exif:LensModel\": \"iPhone 7 back camera 3.99mm f/1.8\", \"Make\": \"Apple\", \"Exif:PixelXDimension\": \"4032\", \"Exif:ApertureValue\": \"1.69599\", \"DateTime\": \"2017:07:18 15:31:30\", \"XResolution\": \"72\", \"Exif:DateTimeDigitized\": \"2017:07:18 15:31:30\", \"oiio:ColorSpace\": \"sRGB\", \"GPS:HPositioningError\": \"6\", \"GPS:DestBearingRef\": \"T\", \"GPS:Speed\": \"0.00532005\", \"Exif:DateTimeOriginal\": \"2017:07:18 15:31:30\", \"GPS:TimeStamp\": \"22, 31, 30\", \"GPS:Latitude\": \"37, 43, 23.81\", \"Exif:PixelYDimension\": \"3024\", \"GPS:ImgDirection\": \"359.233\", \"Exif:MeteringMode\": \"5\", \"Exif:LensSpecification\": \"3.99, 3.99, 1.8, 1.8\", \"Exif:WhiteBalance\": \"0\", \"GPS:LatitudeRef\": \"N\", \"Exif:SceneCaptureType\": \"0\", \"Exif:ExposureProgram\": \"2\", \"FNumber\": \"1.8\", \"GPS:Altitude\": \"1223.82\", \"Exif:ExposureBiasValue\": \"0\", \"GPS:SpeedRef\": \"K\", \"Exif:FocalLength\": \"3.99\", \"GPS:Longitude\": \"119, 36, 57.26\", \"ICCProfile\": \"0, 0, 2, 36, 97, 112, 112, 108, 4, 0, 0, 0, 109, 110, 116, 114, 82, 71, 66, 32, 88, 89, 90, 32, 7, 223, 0, 10, 0, 14, 0, 13, 0, 8, 0, 57, 97, 99, 115, 112, 65, 80, 80, 76, 0, 0, 0, 0, 65, 80, 80, 76, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ... [548 x uint8]\", \"Exif:BrightnessValue\": \"4.96804\", \"GPS:DateStamp\": \"2017:07:18\", \"Exif:YCbCrPositioning\": \"1\", \"GPS:AltitudeRef\": \"0\", \"GPS:LongitudeRef\": \"W\", \"Model\": \"iPhone 7\", \"Exif:LensMake\": \"Apple\", \"GPS:ImgDirectionRef\": \"T\", \"Software\": \"10.3.2\", \"ExposureTime\": \"0.0166667\", \"Exif:ShutterSpeedValue\": \"5.90695\", \"Exif:ExifVersion\": \"0221\", \"Exif:FocalLengthIn35mmFilm\": \"28\", \"Orientation\": \"6\", \"Exif:SubsecTimeDigitized\": \"730\", \"Exif:SubsecTimeOriginal\": \"730\", \"GPS:DestBearing\": \"359.233\", \"ResolutionUnit\": \"none\", \"Exif:FlashPixVersion\": \"0100\", \"jpeg:subsampling\": \"4:2:0\", \"Exif:Flash\": \"24\", \"Exif:SensingMethod\": \"2\", \"AliceVision:SensorWidth\": \"4.890000\"}"
+                    }, 
+                    {
+                        "viewId": 1242530092, 
+                        "intrinsicId": 3054778243, 
+                        "poseId": 1242530092, 
+                        "rigId": -1, 
+                        "subPoseId": -1, 
+                        "path": "mini3/333.JPG", 
+                        "metadata": "{\"YResolution\": \"72\", \"Exif:ColorSpace\": \"65535\", \"Exif:ExposureMode\": \"0\", \"Exif:PhotographicSensitivity\": \"25\", \"Exif:LensModel\": \"iPhone 7 back camera 3.99mm f/1.8\", \"Make\": \"Apple\", \"Exif:PixelXDimension\": \"4032\", \"Exif:ApertureValue\": \"1.69599\", \"DateTime\": \"2017:07:18 15:31:32\", \"oiio:ColorSpace\": \"sRGB\", \"XResolution\": \"72\", \"Exif:DateTimeDigitized\": \"2017:07:18 15:31:32\", \"GPS:DestBearing\": \"346.362\", \"GPS:HPositioningError\": \"8\", \"GPS:DestBearingRef\": \"T\", \"GPS:Speed\": \"0.188065\", \"Exif:DateTimeOriginal\": \"2017:07:18 15:31:32\", \"GPS:TimeStamp\": \"22, 31, 32\", \"GPS:Latitude\": \"37, 43, 23.81\", \"Exif:PixelYDimension\": \"3024\", \"GPS:ImgDirection\": \"346.362\", \"Exif:CustomRendered\": \"2\", \"Exif:LensSpecification\": \"3.99, 3.99, 1.8, 1.8\", \"Exif:WhiteBalance\": \"0\", \"GPS:LatitudeRef\": \"N\", \"Exif:MeteringMode\": \"5\", \"Exif:ExposureProgram\": \"2\", \"FNumber\": \"1.8\", \"GPS:Altitude\": \"1224.68\", \"Exif:ExposureBiasValue\": \"0\", \"GPS:SpeedRef\": \"K\", \"Exif:FocalLength\": \"3.99\", \"GPS:Longitude\": \"119, 36, 57.29\", \"ICCProfile\": \"0, 0, 2, 36, 97, 112, 112, 108, 4, 0, 0, 0, 109, 110, 116, 114, 82, 71, 66, 32, 88, 89, 90, 32, 7, 223, 0, 10, 0, 14, 0, 13, 0, 8, 0, 57, 97, 99, 115, 112, 65, 80, 80, 76, 0, 0, 0, 0, 65, 80, 80, 76, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ... [548 x uint8]\", \"Exif:BrightnessValue\": \"5.00969\", \"GPS:DateStamp\": \"2017:07:18\", \"Exif:YCbCrPositioning\": \"1\", \"GPS:AltitudeRef\": \"0\", \"GPS:LongitudeRef\": \"W\", \"Model\": \"iPhone 7\", \"Exif:LensMake\": \"Apple\", \"GPS:ImgDirectionRef\": \"T\", \"Software\": \"10.3.2\", \"ExposureTime\": \"0.0166667\", \"Exif:ShutterSpeedValue\": \"5.90695\", \"Exif:ExifVersion\": \"0221\", \"Exif:FocalLengthIn35mmFilm\": \"28\", \"Orientation\": \"6\", \"Exif:SubsecTimeDigitized\": \"966\", \"Exif:SubsecTimeOriginal\": \"966\", \"Exif:SceneCaptureType\": \"0\", \"ResolutionUnit\": \"none\", \"Exif:FlashPixVersion\": \"0100\", \"jpeg:subsampling\": \"4:2:0\", \"Exif:Flash\": \"24\", \"Exif:SensingMethod\": \"2\", \"AliceVision:SensorWidth\": \"4.890000\"}"
+                    }
+                ], 
+                "sensorDatabase": "aliceVision/share/aliceVision/cameraSensors.db"
+            }, 
+            "nodeType": "CameraInit", 
+            "uids": {
+                "0": "9b6b2232976c84cc7b57946cd8c83dba4786d147"
+            }, 
+            "parallelization": {
+                "blockSize": 0, 
+                "split": 1, 
+                "size": 3
+            }, 
+            "outputs": {
+                "output": "{cache}/{nodeType}/{uid0}/cameraInit.sfm"
+            }, 
+            "position": [
+                0, 
+                0
+            ], 
+            "internalFolder": "{cache}/{nodeType}/{uid0}/"
+        }, 
+        "DepthMap_1": {
+            "inputs": {
+                "sgmGammaC": 5.5, 
+                "sgmWSH": 4, 
+                "refineGammaP": 8.0, 
+                "nbGPUs": 0, 
+                "refineNSamplesHalf": 150, 
+                "sgmMaxTCams": 10, 
+                "imagesFolder": "{PrepareDenseScene_1.output}", 
+                "downscale": 2, 
+                "refineMaxTCams": 6, 
+                "verboseLevel": "info", 
+                "refineGammaC": 15.5, 
+                "sgmGammaP": 8.0, 
+                "minViewAngle": 2.0, 
+                "refineSigma": 15, 
+                "exportIntermediateResults": false, 
+                "input": "{PrepareDenseScene_1.input}", 
+                "refineNiters": 100, 
+                "refineNDepthsToRefine": 31, 
+                "refineWSH": 3, 
+                "maxViewAngle": 70.0, 
+                "refineUseTcOrRcPixSize": false
+            }, 
+            "nodeType": "DepthMap", 
+            "uids": {
+                "0": "9ddd3780d347976891932ebe2b0643f18040d060"
+            }, 
+            "parallelization": {
+                "blockSize": 3, 
+                "split": 1, 
+                "size": 3
+            }, 
+            "outputs": {
+                "output": "{cache}/{nodeType}/{uid0}/"
+            }, 
+            "position": [
+                0, 
+                0
+            ], 
+            "internalFolder": "{cache}/{nodeType}/{uid0}/"
+        }, 
+        "Publish_1": {
+            "inputs": {
+                "output": "op", 
+                "inputFiles": [
+                    "{Texturing_1.outputMesh}", 
+                    "{Texturing_1.outputMaterial}", 
+                    "{Texturing_1.outputTextures}"
+                ]
+            }, 
+            "nodeType": "Publish", 
+            "uids": {
+                "0": "686f2c71803d543e08333d7c255a7cec23cb4116"
+            }, 
+            "parallelization": {
+                "blockSize": 0, 
+                "split": 1, 
+                "size": 3
+            }, 
+            "outputs": {}, 
+            "position": [
+                0, 
+                0
+            ], 
+            "internalFolder": "{cache}/{nodeType}/{uid0}/"
+        }, 
+        "MeshFiltering_1": {
+            "inputs": {
+                "inputMesh": "{Meshing_1.outputMesh}", 
+                "verboseLevel": "info", 
+                "removeLargeTrianglesFactor": 60.0, 
+                "iterations": 5, 
+                "keepLargestMeshOnly": false, 
+                "lambda": 1.0
+            }, 
+            "nodeType": "MeshFiltering", 
+            "uids": {
+                "0": "3e64092dda467ecb5c2ef4c41aaed8d2d67366f5"
+            }, 
+            "parallelization": {
+                "blockSize": 0, 
+                "split": 1, 
+                "size": 1
+            }, 
+            "outputs": {
+                "outputMesh": "{cache}/{nodeType}/{uid0}/mesh.obj"
+            }, 
+            "position": [
+                0, 
+                0
+            ], 
+            "internalFolder": "{cache}/{nodeType}/{uid0}/"
+        }, 
+        "FeatureMatching_1": {
+            "inputs": {
+                "verboseLevel": "info", 
+                "describerTypes": [
+                    "sift"
+                ], 
+                "exportDebugFiles": false, 
+                "maxMatches": 0, 
+                "geometricError": 0.0, 
+                "savePutativeMatches": false, 
+                "guidedMatching": false, 
+                "imagePairsList": "{ImageMatching_1.output}", 
+                "geometricEstimator": "acransac", 
+                "geometricFilterType": "fundamental_matrix", 
+                "maxIteration": 2048, 
+                "distanceRatio": 0.8, 
+                "input": "{ImageMatching_1.input}", 
+                "photometricMatchingMethod": "ANN_L2", 
+                "featuresFolders": "{ImageMatching_1.featuresFolders}"
+            }, 
+            "nodeType": "FeatureMatching", 
+            "uids": {
+                "0": "58bfc7fa0041111ce71dee9242fa4452ff7633d2"
+            }, 
+            "parallelization": {
+                "blockSize": 20, 
+                "split": 1, 
+                "size": 3
+            }, 
+            "outputs": {
+                "output": "{cache}/{nodeType}/{uid0}/"
+            }, 
+            "position": [
+                0, 
+                0
+            ], 
+            "internalFolder": "{cache}/{nodeType}/{uid0}/"
+        }
+    }
+}
