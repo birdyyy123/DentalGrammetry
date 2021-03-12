@@ -1,7 +1,7 @@
 # คู่มือการติดตั้ง
 # การติดตั้ง Meshroom 
 ## ***ผู้ใช้งานต้องทำการดาวโหลดไฟล์ ติดตั้ง CUDA Toolkit จากเว็บไซต์ https://developer.nvidia.com/cuda-zone ***
-![](image/1.PNG)
+![](https://github.com/birdyyy123/DentalGrammetry/image/1.PNG)
 
  
 ##    1.ดาวโหลดโปรแกรม Meshroom 
