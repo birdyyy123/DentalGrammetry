@@ -54,14 +54,21 @@ def upload_file():
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         
-        subprocess.run(["/home/bird/Downloads/meshroom-2019.2.0/meshroom_photogrammetry.sh", "--input", "/home/bird/Downloads/Web/app/image", "--output", "/home/bird/Downloads/Web/input_CC", "--pipeline", /home/bird/Downloads/Web/input_CC/config])
-        subprocess.check_output(["cloudcompare.CloudCompare", "-silent" ,"-AUTO_SAVE","OFF","-o", "/home/bird/Downloads/Web/input_CC/texturedMesh.obj", "-SAMPLE_MESH", "POINTS","1000000","-C_EXPORT_FMT","BIN","-SAVE_CLOUDS","FILE","/home/bird/Downloads/Web/input_CC/outputCC.bin"])
-        out = subprocess.check_output(["cloudcompare.CloudCompare", "-silent","-AUTO_SAVE","OFF" ,"-o", "/home/bird/Downloads/Web/data_t/input_T.bin", "-o", "/home/bird/Downloads/Web/input_CC/outputCC.bin","-ICP", "-c2c_dist"])
-        out_CC = split(out)
-        out_CC_mean = check_txt(out_CC)
-        flash(out_CC_mean)
+        subprocess.run(["/home/bird/Downloads/meshroom-2019.2.0/meshroom_photogrammetry.sh", "--input", "/home/bird/Downloads/Web/app/image", "--output", "/home/bird/Downloads/Web/input_CC"])
+##        subprocess.check_output(["cloudcompare.CloudCompare", "-silent" ,"-AUTO_SAVE","OFF","-o", "/home/bird/Downloads/Web/input_CC/texturedMesh.obj", "-SAMPLE_MESH", "POINTS","1000000","-C_EXPORT_FMT","BIN","-SAVE_CLOUDS","FILE","/home/bird/Downloads/Web/input_CC/b.bin"])
+##        out = subprocess.check_output(["cloudcompare.CloudCompare", "-silent","-AUTO_SAVE","OFF" ,"-o", "/home/bird/Downloads/Web/data_t/bb.bin", "-o", "/home/bird/Downloads/Web/input_CC/b.bin","-ICP", "-c2c_dist"])
+  
+##        iss = request.form['tooth']
+##        if iss == "Tooth(46)":
+ ##           out = subprocess.check_output(["cloudcompare.CloudCompare", "-silent","-AUTO_SAVE","OFF" ,"-o", "/home/bird/Downloads/Web/data_t/bb.bin", "-o", "/home/bird/Downloads/Web/input_CC/b.bin","-ICP", "-c2c_dist"])
+ ##       if iss == "Tooth(16)":
+ ##           out = subprocess.check_output(["cloudcompare.CloudCompare", "-silent","-AUTO_SAVE","OFF" ,"-o", "/home/bird/Downloads/Web/data_t/bb.bin", "-o", "/home/bird/Downloads/Web/input_CC/b.bin","-ICP", "-c2c_dist"])
+##        out_CC = split(out)
+ ##       out_CC_mean = check_txt(out_CC)
+##        print(out_CC_mean)
+ ##       flash(out_CC_mean)
 
-        return render_template("result2.html",out_CC_mean=out_CC_mean)
+        return render_template("result2.html")##,out_CC_mean=out_CC_mean)
 
 
 @app.route('/result')
@@ -74,7 +81,10 @@ def web_help():
 
 @app.route('/result2')
 def result2():
- return render_template('result2.html')
+    subprocess.run(["cloudcompare.ccViewer","-o", "/home/bird/Downloads/Web/Output_CC/3Dmodel.bin"])
+    return render_template('result2.html')
+
+
 
 
 if __name__ == '__main__':
